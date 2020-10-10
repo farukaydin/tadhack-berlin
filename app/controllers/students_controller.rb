@@ -28,6 +28,7 @@ class StudentsController < ApplicationController
   end
 
   def destroy
+    @student.messages.delete_all
     @student.destroy
   end
 
