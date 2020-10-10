@@ -4,6 +4,8 @@ class MessagesController < ApplicationController
       {
         id: message.id,
         content: message.content,
+        message_type: message.message_type,
+        audio_url: message.audio_url,
         sender: {
           id: message.sender.id,
           type: message.sender.class.to_s,
