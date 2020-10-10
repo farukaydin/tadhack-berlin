@@ -1,6 +1,10 @@
 class MessagesController < ApplicationController
   def index
-    render json: Message.all
+    messages = Message.all.map do |message|
+      message.displayed_message
+    end
+
+    render json: messages
   end
 
   def create
