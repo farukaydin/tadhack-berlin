@@ -13,6 +13,10 @@ class StudentsController < ApplicationController
     render json: student.errors, status: :unprocessable_entity
   end
 
+  def show
+    render json: Student.find(params[:id])
+  end
+
   private
 
   def student_params
