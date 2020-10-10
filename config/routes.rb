@@ -3,4 +3,5 @@ Rails.application.routes.draw do
 
   resources :students
   resources :teachers, only: [:index, :show]
+  resources :messages, only: [:index, :create]
 end
