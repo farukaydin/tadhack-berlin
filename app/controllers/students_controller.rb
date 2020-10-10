@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  before_action :set_student, only: [:show, :update, :destroy]
+
   def index
     render json: Student.all
   end
@@ -14,10 +16,26 @@ class StudentsController < ApplicationController
   end
 
   def show
-    render json: Student.find(params[:id])
+    render json: @student
+  end
+
+  def update
+    if @student.update(student_params)
+      render json: @student
+    else
+      render json: @student.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @student.destroy
   end
 
   private
+
+  def set_student
+    @student = Student.find(params[:id])
+  end
 
   def student_params
     params.require(:student).permit(:name, :phone_number)
