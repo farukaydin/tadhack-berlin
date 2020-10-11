@@ -1,19 +1,28 @@
 class Calls
   attr_reader :client
 
-  AVAYA_CALLS_ENDPOINT = 'https://api.zang.io/v2/Accounts/AC777c3e3222b41c420f0f41ff8f1363f1/Calls.json'.freeze
-  NODE_RED_DIALPLAN_URL = 'https://nodered.aws.automat-berlin.net/th2020call'.freeze
+  AVAYA_CALLS_ENDPOINT = ENV['AVAYA_CALLS_ENDPOINT'].freeze
+  AVAYA_TOKEN = ENV['AVAYA_TOKEN'].freeze
+  NODE_RED_DIALPLAN_URL = ENV['NODE_RED_DIALPLAN_URL'].freeze
 
   def initialize(client: HTTParty)
     @client = client
   end
 
+  def computed_node_red_number(to)
+    to = to.sub!('+', '')
+
+    message = NODE_RED_DIALPLAN_URL + "?student=" + to
+
+    return message
+  end
+
   def send(from:, to:)
     options = {
-      body: "From=#{from}&To=#{to}&Url=#{NODE_RED_DIALPLAN_URL}",
-      headers: { "Authorization": "AC777c3e3222b41c420f0f41ff8f1363f1:506411d435724d14b6319040ec044e84" }
+      body: "From=+447537149365&To=#{from}&Url=#{computed_node_red_number(to)}&Method=GET",
+      headers: { "Authorization": "Basic #{AVAYA_TOKEN}"}
     }
 
-    client.get(AVAYA_CALLS_ENDPOINT, options)
+    client.post(AVAYA_CALLS_ENDPOINT, options)
   end
 end
