@@ -11,12 +11,11 @@ class Message < ApplicationRecord
   private
 
   def send_sms
-    if(message_type.text == text)
-      Sms.new.send(
-        message: content,
-        sender: sender.phone_number,
-        receiver: receiver.phone_number
-      )
-    end
+    return unless message_type == 'text'
+    Sms.new.send(sms_params)
+  end
+
+  def sms_params
+    { message: content, sender: sender.phone_number, receiver: receiver.phone_number}
   end
 end
