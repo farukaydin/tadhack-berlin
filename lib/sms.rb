@@ -8,7 +8,7 @@ class Sms
     @client = client
   end
 
-  def send(message:, receiver:, sender: 'hubraum')
+  def send(message:, receiver:, sender: '+447537149365')
     options = { 
       body: "From=#{sender}&To=#{receiver}&Body=#{message}",
       headers: { "Authorization": TADHACK_AUTHORIZATION_TOKEN }
