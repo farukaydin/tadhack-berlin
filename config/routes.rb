@@ -7,4 +7,5 @@ Rails.application.routes.draw do
 
   post '/received_sms', to: 'received#sms'
   post '/received_calls', to: 'received#calls'
+  post '/calls', to: 'calls#create'
 end
