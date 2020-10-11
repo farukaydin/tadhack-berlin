@@ -11,7 +11,7 @@ class Message < ApplicationRecord
   private
 
   def send_sms
-    return unless message_type == 'text'
+    return unless self.message_type == 'text'
     Sms.new.send(sms_params)
   end
 
