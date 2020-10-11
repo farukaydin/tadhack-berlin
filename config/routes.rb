@@ -4,4 +4,7 @@ Rails.application.routes.draw do
   resources :students
   resources :teachers, only: [:index, :show]
   resources :messages, only: [:index, :create]
+
+  get '/received_sms', to: 'received#sms'
+  get '/received_calls', to: 'received#calls'
 end
