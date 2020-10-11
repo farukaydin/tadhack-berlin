@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   def index
-    messages = Message.all.map do |message|
+    
+    messages = Message.order(created_at: :asc).map do |message|
       {
         id: message.id,
         content: message.content,
