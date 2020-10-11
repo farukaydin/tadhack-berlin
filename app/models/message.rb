@@ -8,6 +8,16 @@ class Message < ApplicationRecord
 
   before_create :send_sms
 
+  def self.save_batch(sender_id:, receiver_ids:, message:)
+    sender = Teacher.find(sender_id)
+
+    receiver_ids.each do |receiver_id|
+      receiver = Student.find(receiver_id)
+
+      Message.create(sender: sender, receiver: receiver, content: message)
+    end
+  end
+
   private
 
   def send_sms

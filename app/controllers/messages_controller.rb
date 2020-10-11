@@ -27,7 +27,16 @@ class MessagesController < ApplicationController
   end
 
   def create
-    message = Message.new(message_params)
+    if(params['message']['receiver_id'].size > 1)
+      receiver_ids = params['message']['receiver_id']
+
+      Message.save_batch(sender_id: message_params[:sender_id], receiver_ids: receiver_ids, message: message_params[:content])
+
+      return head :ok
+    end
+
+    receiver_id = params['message']['receiver_id'].first
+    message = Message.new(message_params.merge!(receiver_id: receiver_id))
 
     if message.save
       return render json: message, status: :ok
@@ -39,6 +48,6 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:content, :sender_id, :sender_type, :receiver_id, :receiver_type)
+    params.require(:message).permit(:content, :receiver_id, :receiver_type, :sender_id, :sender_type)
   end
 end
