@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
         id: message.id,
         content: message.content,
         message_type: message.message_type,
+        canonical_id: message.canonical_id,
         audio_url: message.audio_url,
         sender: {
           id: message.sender.id,

@@ -4,21 +4,29 @@ class Message < ApplicationRecord
 
   enum message_type: { text: 0, audio: 1 }
   
-  validates :content, presence: true
+  validates :content, :canonical_id, presence: true
 
+  before_validation :assign_canonical
   before_create :send_sms
 
+
   def self.save_batch(sender_id:, receiver_ids:, message:)
+    canonical_id = Digest::SHA1.hexdigest("some-random-string")[8..16]
+
     sender = Teacher.find(sender_id)
 
     receiver_ids.each do |receiver_id|
       receiver = Student.find(receiver_id)
 
-      Message.create(sender: sender, receiver: receiver, content: message)
+      Message.create(sender: sender, receiver: receiver, content: message, canonical_id: canonical_id)
     end
   end
 
   private
+
+  def assign_canonical
+    self.canonical_id = Digest::SHA1.hexdigest("some-random-string")[8..16]
+  end
 
   def send_sms
     return unless self.message_type == 'text'
