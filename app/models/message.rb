@@ -35,6 +35,6 @@ class Message < ApplicationRecord
   end
 
   def sms_params
-    { message: content, sender: sender.phone_number, receiver: receiver.phone_number}
+    { message: content, sender: "+447537149365", receiver: receiver.phone_number}
   end
 end
