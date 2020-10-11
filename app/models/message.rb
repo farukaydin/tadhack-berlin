@@ -31,10 +31,6 @@ class Message < ApplicationRecord
 
   def send_sms
     return unless self.message_type == 'text'
-    Sms.new.send(sms_params)
-  end
-
-  def sms_params
-    { message: content, sender: "+447537149365", receiver: receiver.phone_number}
+    Sms.new.send(message: content, sender: "+447537149365", receiver: receiver.phone_number)
   end
 end
