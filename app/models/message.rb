@@ -7,7 +7,7 @@ class Message < ApplicationRecord
   validates :content, :canonical_id, presence: true
 
   before_validation :assign_canonical
-  after_create :send_sms
+  after_commit :send_sms, on: :create
 
 
   def self.save_batch(sender_id:, receiver_ids:, message:)
