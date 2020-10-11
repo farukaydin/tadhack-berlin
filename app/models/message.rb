@@ -11,7 +11,7 @@ class Message < ApplicationRecord
 
 
   def self.save_batch(sender_id:, receiver_ids:, message:)
-    canonical_id = Digest::SHA1.hexdigest("some-random-string")[8..16]
+    canonical_id = SecureRandom.uuid
 
     sender = Teacher.find(sender_id)
 
@@ -25,7 +25,8 @@ class Message < ApplicationRecord
   private
 
   def assign_canonical
-    self.canonical_id = Digest::SHA1.hexdigest("some-random-string")[8..16]
+    return if self.canonical_id.present?
+    self.canonical_id = SecureRandom.uuid
   end
 
   def send_sms
