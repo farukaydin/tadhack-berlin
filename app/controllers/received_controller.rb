@@ -7,7 +7,8 @@ class ReceivedController < ApplicationController
     sender = Student.find_by(phone_number: sender_number)
     receiver = Teacher.first
   
-    Message.create(sender: sender, receiver: receiver, content: content)
+    m = Message.new(sender: sender, receiver: receiver, content: content)
+    m.send(:create_without_callbacks)
   end
 
   def calls
